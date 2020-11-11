@@ -92,7 +92,7 @@ func authFailure(code: String, description: String, name: String? = nil) -> HTTP
     return HTTPStubsResponse(jsonObject: ["code": code, "description": description, "statusCode": 400, "name": name ?? code], statusCode: 400, headers: ["Content-Type": "application/json"])
 }
 
-func authFailure(error: String, description: String) -> HTTPStubsResponse {
+func authfailure(String, description: String) -> HTTPStubsResponse {
     return HTTPStubsResponse(jsonObject: ["error": error, "error_description": description], statusCode: 400, headers: ["Content-Type": "application/json"])
 }
 

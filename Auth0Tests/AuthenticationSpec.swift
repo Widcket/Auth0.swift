@@ -124,7 +124,7 @@ class AuthenticationSpec: QuickSpec {
                     let code = "invalid_username_password"
                     let description = "Invalid password"
                     let password = "return invalid password"
-                    stub(condition: isResourceOwner(Domain) && hasAtLeast(["password": password])) { _ in return authFailure(error: code, description: description) }.name = "invalid password"
+                    stub(condition: isResourceOwner(Domain) && hasAtLeast(["password": password])) { _ in return authfailure(code, description: description) }.name = "invalid password"
                     auth.login(usernameOrEmail: SupportAtAuth0, password: password, connection: ConnectionName).start { result in
                         expect(result).to(haveAuthenticationError(code: code, description: description))
                         done()
@@ -970,7 +970,7 @@ class AuthenticationSpec: QuickSpec {
             }
 
             it("should report failure") {
-                stub(condition: isPasswordless(Domain)) { _ in return authFailure(error: "error", description: "description") }.name = "failed passwordless start"
+                stub(condition: isPasswordless(Domain)) { _ in return authfailure("error", description: "description") }.name = "failed passwordless start"
                 waitUntil(timeout: Timeout) { done in
                     auth.startPasswordless(email: SupportAtAuth0).start { result in
                         expect(result).to(haveAuthenticationError(code: "error", description: "description"))
@@ -1128,7 +1128,7 @@ class AuthenticationSpec: QuickSpec {
             }
 
             it("should report failure") {
-                stub(condition: isPasswordless(Domain)) { _ in return authFailure(error: "error", description: "description") }.name = "failed passwordless start"
+                stub(condition: isPasswordless(Domain)) { _ in return authfailure("error", description: "description") }.name = "failed passwordless start"
                 waitUntil(timeout: Timeout) { done in
                     auth.startPasswordless(phoneNumber: Phone).start { result in
                         expect(result).to(haveAuthenticationError(code: "error", description: "description"))
@@ -1276,7 +1276,7 @@ class AuthenticationSpec: QuickSpec {
             }
 
             it("should report failure to get token info") {
-                stub(condition: isTokenInfo(Domain)) { _ in return authFailure(error: "invalid_token", description: "the token is invalid") }.name = "token info failed"
+                stub(condition: isTokenInfo(Domain)) { _ in return authfailure("invalid_token", description: "the token is invalid") }.name = "token info failed"
                 waitUntil(timeout: Timeout) { done in
                     auth.tokenInfo(token: IdToken).start { result in
                         expect(result).to(haveAuthenticationError(code: "invalid_token", description: "the token is invalid"))
@@ -1296,7 +1296,7 @@ class AuthenticationSpec: QuickSpec {
             }
 
             it("should report failure to get user info") {
-                stub(condition: isUserInfo(Domain)) { _ in return authFailure(error: "invalid_token", description: "the token is invalid") }.name = "token info failed"
+                stub(condition: isUserInfo(Domain)) { _ in return authfailure("invalid_token", description: "the token is invalid") }.name = "token info failed"
                 waitUntil(timeout: Timeout) { done in
                     auth.userInfo(token: IdToken).start { result in
                         expect(result).to(haveAuthenticationError(code: "invalid_token", description: "the token is invalid"))
@@ -1320,7 +1320,7 @@ class AuthenticationSpec: QuickSpec {
             }
 
             it("should report failure to get user info") {
-                stub(condition: isUserInfo(Domain)) { _ in return authFailure(error: "invalid_token", description: "the token is invalid") }.name = "token info failed"
+                stub(condition: isUserInfo(Domain)) { _ in return authfailure("invalid_token", description: "the token is invalid") }.name = "token info failed"
                 waitUntil(timeout: Timeout) { done in
                     auth.userInfo(withAccessToken: AccessToken).start { result in
                         expect(result).to(haveAuthenticationError(code: "invalid_token", description: "the token is invalid"))
@@ -1393,7 +1393,7 @@ class AuthenticationSpec: QuickSpec {
                     let code = "invalid_token"
                     let description = "Invalid token"
                     let token = "return invalid token"
-                    stub(condition: isOAuthAccessToken(Domain) && hasAtLeast(["access_token": token])) { _ in return authFailure(error: code, description: description) }.name = "invalid token"
+                    stub(condition: isOAuthAccessToken(Domain) && hasAtLeast(["access_token": token])) { _ in return authfailure(code, description: description) }.name = "invalid token"
                     auth.loginSocial(token: token, connection: "facebook").start { result in
                         expect(result).to(haveAuthenticationError(code: code, description: description))
                         done()
@@ -1459,7 +1459,7 @@ class AuthenticationSpec: QuickSpec {
 
             beforeEach {
                 code = UUID().uuidString.replacingOccurrences(of: "-", with: "")
-                stub(condition: isResourceOwner(Domain) && hasAtLeast(["username":SupportAtAuth0, "password": ValidPassword]) && hasNoneOf(["mfa_code"])) { _ in return authFailure(error: "a0.mfa_required", description: "need multifactor") }.name = "MFA Required"
+                stub(condition: isResourceOwner(Domain) && hasAtLeast(["username":SupportAtAuth0, "password": ValidPassword]) && hasNoneOf(["mfa_code"])) { _ in return authfailure("a0.mfa_required", description: "need multifactor") }.name = "MFA Required"
                 stub(condition: isResourceOwner(Domain) && hasAtLeast(["username": SupportAtAuth0, "password": ValidPassword, "mfa_code": code])) { _ in return authResponse(accessToken: AccessToken) }.name = "MFA Login"
             }
 

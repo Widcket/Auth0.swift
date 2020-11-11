@@ -140,10 +140,10 @@ class BaseWebAuth: WebAuthenticatable {
 
     func start(_ callback: @escaping (Result<Credentials>) -> Void) {
         guard let redirectURL = self.redirectURL else {
-            return callback(Result.failure(error: WebAuthError.noBundleIdentifierFound))
+            return callback(Result.failure(WebAuthError.noBundleIdentifierFound))
         }
         if self.responseType.contains(.idToken) {
-            guard self.nonce != nil else { return callback(Result.failure(error: WebAuthError.noNonceProvided)) }
+            guard self.nonce != nil else { return callback(Result.failure(WebAuthError.noNonceProvided)) }
         }
         let handler = self.handler(redirectURL)
         let state = self.parameters["state"] ?? generateDefaultState()
@@ -179,7 +179,7 @@ class BaseWebAuth: WebAuthenticatable {
         }
         #endif
         // TODO: On the next major add a new case to WebAuthError
-        callback(.failure(error: WebAuthError.unknownError))
+        callback(.failure(WebAuthError.unknownError))
         return nil
     }
 
